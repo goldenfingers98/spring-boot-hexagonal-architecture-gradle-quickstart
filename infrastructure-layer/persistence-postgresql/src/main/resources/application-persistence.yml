@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: user
+    url: jdbc:postgresql://localhost:5432/demo
+    password: user
+  jpa:
+    generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            "[non_contextual_creation]": true
+    database: default
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    open-in-view: true
