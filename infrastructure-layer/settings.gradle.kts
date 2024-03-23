@@ -2,9 +2,10 @@ rootProject.name = "infrastructure-layer"
 
 include("persistence-postgresql")
 
-val externalProjectsPaths = arrayOf(
-    "../domain-layer",
-    "../plugins"
+val externalProjectsPaths = mapOf(
+    "../domain-layer" to listOf(
+        "tn.ksoftwares.hexagonal:core" to ":core"
+    )
 )
 
 @Suppress("UnstableApiUsage")
@@ -13,8 +14,16 @@ dependencyResolutionManagement {
         mavenLocal()
         mavenCentral()
     }
-    externalProjectsPaths.filter { File(it).exists() }
-        .forEach { includeBuild(it) }
+    externalProjectsPaths.filter { File(it.key).exists() }
+        .forEach {
+            includeBuild(it.key) {
+                dependencySubstitution {
+                    it.value.forEach { sub ->
+                        substitute(module(sub.first)).using(project(sub.second))
+                    }
+                }
+            }
+        }
 }
 
 pluginManagement {
@@ -23,4 +32,9 @@ pluginManagement {
         google()
         mavenLocal()
     }
+
+    listOf("../plugins").filter { File(it).exists() }
+        .forEach {
+            includeBuild(it)
+        }
 }
