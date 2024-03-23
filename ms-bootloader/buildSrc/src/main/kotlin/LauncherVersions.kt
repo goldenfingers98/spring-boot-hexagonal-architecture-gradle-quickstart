@@ -5,4 +5,5 @@ object LauncherVersions {
     const val PLUGIN_VERSION = "1.0.0"
     const val SPRING_DEPENDENCY_MANAGEMENT_VERSION = "1.1.0"
     const val SPRING_PLUGIN_VERSION = "2.4.3"
+    const val SPRING_BOM_VERSION = "2.4.13"
 }

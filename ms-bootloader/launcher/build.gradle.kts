@@ -10,6 +10,13 @@ dependencies {
     implementation("${ProjectArtifact.GROUP}:rest:${LauncherVersions.APPLICATION_VERSION}")
 }
 
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.boot:spring-boot-dependencies:${LauncherVersions.SPRING_BOM_VERSION}")
+    }
+}
+
+
 application {
     mainClass.set("${ProjectArtifact.GROUP}.Application")
 }

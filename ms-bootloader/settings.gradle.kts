@@ -1,11 +1,16 @@
 rootProject.name = "ms-bootloader"
 include("launcher")
 
-val externalProjectsPaths = arrayOf(
-    "../domain-layer",
-    "../infrastructure-layer",
-    "../application-layer",
-    "../plugins"
+val externalProjectsPaths = mapOf(
+    "../domain-layer" to listOf(
+        "tn.ksoftwares.hexagonal:core" to ":core"
+    ),
+    "../infrastructure-layer" to listOf(
+        "tn.ksoftwares.hexagonal:persistence-postgresql" to ":persistence-postgresql"
+    ),
+    "../application-layer" to listOf(
+        "tn.ksoftwares.hexagonal:rest" to ":rest"
+    )
 )
 
 @Suppress("UnstableApiUsage")
@@ -14,8 +19,16 @@ dependencyResolutionManagement {
         mavenLocal()
         mavenCentral()
     }
-    externalProjectsPaths.filter { File(it).exists() }
-        .forEach { includeBuild(it) }
+    externalProjectsPaths.filter { File(it.key).exists() }
+        .forEach {
+            includeBuild(it.key) {
+                dependencySubstitution {
+                    it.value.forEach { sub ->
+                        substitute(module(sub.first)).using(project(sub.second))
+                    }
+                }
+            }
+        }
 }
 
 pluginManagement {
